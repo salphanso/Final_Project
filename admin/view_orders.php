@@ -78,4 +78,54 @@ $message = $_GET['msg'] ?? '';
                     <td><?= $order['order_id'] ?></td>
                     <td>
                         <strong><?= htmlspecialchars($order['user_name']) ?></strong><br>
-                        <small><?= htmlspecialchars($order['user_email']) ?></small
+                        <small><?= htmlspecialchars($order['user_email']) ?></small><br>
+                        <small><?= date("Y-m-d H:i", strtotime($order['order_date'])) ?></small>
+                    </td>
+                    <td>
+                        <div class="order-details">
+                        <?php
+                            $details_sql = "
+                                SELECT od.quantity, od.price, p.name 
+                                FROM order_details od
+                                JOIN products p ON od.product_id = p.id
+                                WHERE od.order_id = ?
+                            ";
+                            $details_stmt = $pdo->prepare($details_sql);
+                            $details_stmt->execute([$order['order_id']]);
+                            $details = $details_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            foreach ($details as $item): 
+                        ?>
+                            <small>
+                                <?= $item['quantity'] ?>x <?= htmlspecialchars($item['name']) ?> 
+                                (@$<?= number_format($item['price'], 2) ?>)
+                            </small><br>
+                        <?php endforeach; ?>
+                        </div>
+                    </td>
+                    <td>$<?= number_format($order['total_price'], 2) ?></td>
+                    <td>
+                        <form action="process_order.php" method="POST">
+                            <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">
+                            
+                            <select name="status" class="form-select mb-2">
+                                <?php foreach ($status_options as $status): ?>
+                                    <option value="<?= $status ?>" 
+                                            <?= ($order['status'] == $status) ? 'selected' : '' ?>>
+                                        <?= $status ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            
+                            <button type="submit" class="btn btn-sm btn-success w-100">Update Status</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
+</div>
+</body>
+</html>

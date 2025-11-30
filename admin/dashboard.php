@@ -9,23 +9,29 @@ if (!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1) {
 require_once "../classes/Database.php";
 $pdo = db();
 
+$total_products = 0;
+$total_orders = 0;
+$total_revenue = 0.00; 
+$pending_orders = 0;
+$stats_error = null; 
 
 try {
+    
     $stmt_products = $pdo->query("SELECT COUNT(*) FROM products");
     $total_products = $stmt_products->fetchColumn();
 
     $stmt_orders = $pdo->query("SELECT COUNT(*) FROM orders");
     $total_orders = $stmt_orders->fetchColumn();
 
-    $stmt_revenue = $pdo->query("SELECT SUM(total_price) FROM orders WHERE status != 'Cancelled'");
-    $total_revenue = $stmt_revenue->fetchColumn() ?? 0;
+    $stmt_revenue = $pdo->query("SELECT IFNULL(SUM(total_price), 0.00) FROM orders WHERE status != 'Cancelled'");
+    $total_revenue = $stmt_revenue->fetchColumn(); 
 
     $stmt_pending = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Pending'");
     $pending_orders = $stmt_pending->fetchColumn();
     
 } catch (PDOException $e) {
     error_log("Dashboard stats error: " . $e->getMessage());
-    $stats_error = "Could not load dashboard statistics.";
+    $stats_error = "Could not load dashboard statistics. A database error occurred.";
 }
 
 include "../inc/header.php";

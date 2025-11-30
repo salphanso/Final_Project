@@ -1,64 +1,58 @@
 <?php
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
-if (strpos($_SERVER['REQUEST_URI'], '/admin/') !== false) {
-    $base_path = '../'; 
-} else {
-    $base_path = ''; 
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Computer Store</title>
-    <link rel="stylesheet" href="<?= $base_path ?>assets/css/style.css"> 
+    <link rel="stylesheet" href="/online_computer_store/assets/css/styles.css"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="<?= $base_path ?>index.php">Computer Store</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<header class="bg-dark text-white p-3 mb-4 sticky-top">
+    <div class="container d-flex justify-content-between align-items-center">
+        
+        <h1 class="h3 mb-0">
+            <a href="index.php" class="text-white text-decoration-none">Computer Store</a>
+        </h1>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= $base_path ?>index.php">Products</a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav">
-                <?php if (!empty($_SESSION['user_id'])): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $base_path ?>cart.php">🛒 Cart</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $base_path ?>logout.php">Logout</a>
-                    </li>
-                    <?php if (!empty($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
-                        <li class="nav-item">
-                            <a class="nav-link text-warning" href="<?= $base_path ?>admin/dashboard.php">⚙️ Admin</a>
-                        </li>
-                    <?php endif; ?>
-                <?php else: ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $base_path ?>login.php">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?= $base_path ?>register.php">Register</a>
-                    </li>
+        <nav class="d-flex align-items-center">
+            <a href="index.php" class="nav-link text-white mx-2">Products</a>
+            <a href="cart.php" class="btn btn-secondary btn-sm mx-2">Cart</a>
+            
+            <div class="ms-3 d-flex gap-2">
+            <?php 
+            if (isset($_SESSION['user_id'])): 
+                
+                if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): 
+                ?>
+                    <a href="admin/dashboard.php" class="btn btn-warning btn-sm">Admin</a>
+                <?php 
+                else: 
+                ?>
+                    <a href="user_orders.php" class="btn btn-info btn-sm">Order History</a>
                 <?php endif; ?>
-            </ul>
-        </div>
+                
+                <a href="logout.php" class="btn btn-danger btn-sm">
+                    Logout (<?= htmlspecialchars($_SESSION['user_name'] ?? 'User') ?>)
+                </a>
+
+            <?php 
+            else: 
+            ?>
+                <a href="login.php" class="btn btn-outline-light btn-sm">Login</a>
+                <a href="register.php" class="btn btn-primary btn-sm">Register</a>
+            <?php endif; ?>
+            </div>
+        </nav>
     </div>
-</nav>
-<div class="container">
+</header>
+
+<div class="container mb-4">
+    </div>

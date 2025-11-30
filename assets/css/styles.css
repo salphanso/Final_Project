@@ -148,6 +148,7 @@ form button:hover {
     text-align: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
+
 .search-filter {
     display: flex;
     gap: 15px;
@@ -175,6 +176,11 @@ form button:hover {
     border-radius: 8px;
     text-align: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    height: 100%; 
 }
 
 .product-card img {
@@ -182,4 +188,33 @@ form button:hover {
     height: 180px;
     object-fit: contain;
     margin-bottom: 10px;
+}
+
+.product-card h5 {
+    
+    height: 3em; 
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.product-card p.price {
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+
+.product-card .btn {
+    width: 100%;
+    margin-top: auto; 
+    padding: 8px 10px;
+    font-size: 0.9em;
+}
+
+.nav-link.text-white {
+    padding: 0.5rem 0.75rem; 
+}
+
+.ms-3.d-flex.gap-2 {
+    align-items: center; 
 }
