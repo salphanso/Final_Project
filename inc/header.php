@@ -24,12 +24,12 @@ if (session_status() == PHP_SESSION_NONE) {
 
         <nav class="d-flex align-items-center">
             <a href="index.php" class="nav-link text-white mx-2">Products</a>
+            
             <a href="cart.php" class="btn btn-secondary btn-sm mx-2">Cart</a>
             
             <div class="ms-3 d-flex gap-2">
             <?php 
             if (isset($_SESSION['user_id'])): 
-                
                 if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): 
                 ?>
                     <a href="admin/dashboard.php" class="btn btn-warning btn-sm">Admin</a>
@@ -44,9 +44,9 @@ if (session_status() == PHP_SESSION_NONE) {
                 </a>
 
             <?php 
-            else: 
+            else:
             ?>
-                <a href="login.php" class="btn btn-outline-light btn-sm">Login</a>
+                <a href="login.php" class="btn btn-light btn-sm">Login</a> 
                 <a href="register.php" class="btn btn-primary btn-sm">Register</a>
             <?php endif; ?>
             </div>
